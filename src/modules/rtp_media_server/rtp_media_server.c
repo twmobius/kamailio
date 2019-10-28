@@ -172,6 +172,10 @@ static int mod_init(void)
 	rms->udp_last_port = 50000 + rand() % 10000;
 	rms_media_init();
 
+	if(!rms_dialog_init()) {
+		LM_ERR("can't initialize rms_dialog_list !\n");
+		return -1;
+	}
 	if(!init_rms_dialog_list()) {
 		LM_ERR("can't initialize rms_dialog_list !\n");
 		return -1;

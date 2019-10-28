@@ -188,12 +188,35 @@ error:
 	return NULL;
 }
 
+int rms_dialog_init() {
+	if(load_dlg_api(&dlg_api) != 0) {
+		LM_ERR("can't load dialog API\n");
+		return 0;
+	}
+	return 1;
+}
+
 rms_dialog_info_t *rms_dialog_new(struct sip_msg *msg)
 {
 	struct hdr_field *hdr = NULL;
+	struct dlg_cell* dlg = NULL;
 
 	if(!rms_check_msg(msg))
 		return NULL;
+
+	/* trying to get dialog */
+	if (dlg_api.get_dlg) {                                                                                                                                                                                                                                                     		dlg = dlg_api.get_dlg(msg);
+	}
+	if (dlg) {
+		LM_INFO("dialog found call-id[%.*s][%.*s][%.*s]\n",
+				dlg->callid.len, dlg->callid.s,
+				dlg->tag[0].len, dlg->tag[0].s,
+				dlg->tag[1].len, dlg->tag[1].s
+			);
+	} else {
+		LM_INFO("dialog not found !\n");
+	}
+
 	rms_dialog_info_t *si = shm_malloc(sizeof(rms_dialog_info_t));
 	if(!si) {
 		LM_ERR("can not allocate dialog info !\n");

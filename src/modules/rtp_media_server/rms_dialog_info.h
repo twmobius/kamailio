@@ -21,11 +21,15 @@
 #ifndef rms_dialog_info_h
 #define rms_dialog_info_h
 // #include "rtp_media_server.h"
+#include "../dialog/dlg_load.h"
+#include "../dialog/dlg_hash.h"
 #include "rms_media.h"
 //typedef struct rms_action rms_action_t;
 typedef struct rms_dialog_info rms_dialog_info_t;
 // struct call_leg_media;
 // typedef struct call_leg_media call_leg_media_t;
+
+struct dlg_binds dlg_api;
 
 typedef enum rms_action_type {
 	RMS_NONE,
@@ -58,6 +62,7 @@ typedef struct rms_action
 
 int rms_check_msg(struct sip_msg *msg);
 rms_action_t *rms_action_new(rms_action_type_t t);
+int rms_dialog_init();
 int init_rms_dialog_list();
 rms_dialog_info_t *rms_dialog_search(struct sip_msg *msg);
 rms_dialog_info_t *rms_dialog_search_sync(struct sip_msg *msg);
